@@ -32,3 +32,29 @@ int findClientByCPF(const char *cpf) {
     }
     return -1;
 }
+
+// Cria um novo cliente
+void createClient(char cpf[12]) {
+    if (num_clients < MAX_CLIENTS) {
+        Client newClient;
+        // Coleta informações do cliente
+        printf("Nome: ");
+        scanf(" %[^\n]s", newClient.name);
+        printf("CPF: ");
+        scanf("%s", newClient.cpf);
+        printf("Tipo de Conta (C para Comum, P para Plus): ");
+        scanf(" %c", &newClient.account_type);
+        printf("Valor Inicial da Conta: ");
+        scanf("%lf", &newClient.balance);
+        printf("Senha: ");
+        scanf("%s", newClient.password);
+        newClient.num_transactions = 0;
+        // Adiciona o cliente à matriz
+        clients[num_clients] = newClient;
+        num_clients++;
+        saveClientsToFile(); // Salva os dados no arquivo
+        printf("Cliente criado com sucesso.\n");
+    } else {
+        printf("Limite de clientes atingido.\n");
+    }
+}
