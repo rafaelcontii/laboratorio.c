@@ -58,3 +58,22 @@ void createClient(char cpf[12]) {
         printf("Limite de clientes atingido.\n");
     }
 }
+
+
+// Deleta um cliente com base no CPF
+void deleteClient(char cpf[12]) {
+
+    printf("Digite o CPF do cliente que deseja apagar: ");
+    scanf("%s", cpf);
+    int index = findClientByCPF(cpf);
+    if (index != -1) {
+        for (int i = index; i < num_clients - 1; i++) {
+            clients[i] = clients[i + 1];
+        }
+        num_clients--;
+        saveClientsToFile(); // Atualiza o arquivo
+        printf("Cliente apagado com sucesso.\n");
+    } else {
+        printf("Cliente não encontrado.\n");
+    }
+}
