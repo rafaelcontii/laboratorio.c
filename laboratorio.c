@@ -202,3 +202,36 @@ void transfer() {
             printf("CPF da Conta de Destino: ");
             scanf("%s", cpf_dest);
             int index_dest = findClientByCPF(cpf_dest);
+            if (index_dest != -1) {
+                if (index_source == index_dest) {
+                    printf("Voce nao pode transferir para a mesma conta.\n");
+                } else {
+                    printf("Valor a ser transferido: R$ ");
+                    scanf("%lf", &amount);
+                    if (amount > clients[index_source].balance) {
+                        printf("Saldo insuficiente.\n");
+                    } else {
+                        clients[index_source].balance -= amount;
+                        if (clients[index_source].num_transactions < MAX_TRANSACTIONS) {
+                            clients[index_source].transactions[clients[index_source].num_transactions] = -amount;
+                            clients[index_source].num_transactions++;
+                        }
+                        clients[index_dest].balance += amount;
+                        if (clients[index_dest].num_transactions < MAX_TRANSACTIONS) {
+                            clients[index_dest].transactions[clients[index_dest].num_transactions] = amount;
+                            clients[index_dest].num_transactions++;
+                        }
+                        saveClientsToFile();
+                        printf("Transferencia realizada com sucesso.\n");
+                    }
+                }
+            } else {
+                printf("Conta de Destino nao encontrada.\n");
+            }
+        } else {
+            printf("Senha da Conta de Origem incorreta.\n");
+        }
+    } else {
+        printf("Conta de Origem não encontrada.\n");
+    }
+}
