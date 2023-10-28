@@ -126,3 +126,26 @@ void debit () {
         printf("Cliente nao encontrado.\n");
     }
 }
+
+
+// Realiza um depósito na conta de um cliente
+void deposit(char cpf[12]) {
+
+    double amount;
+    printf("CPF: ");
+    scanf("%s", cpf);
+    int index = findClientByCPF(cpf);
+    if (index != -1) {
+        printf("Valor a ser depositado: R$ ");
+        scanf("%lf", &amount);
+        clients[index].balance += amount;
+        if (clients[index].num_transactions < MAX_TRANSACTIONS) {
+            clients[index].transactions[clients[index].num_transactions] = amount;
+            clients[index].num_transactions++;
+        }
+        saveClientsToFile();
+        printf("Deposito realizado com sucesso. Novo saldo: R$ %.2f\n", clients[index].balance);
+    } else {
+        printf("Cliente nao encontrado.\n");
+    }
+}
