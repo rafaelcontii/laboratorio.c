@@ -185,3 +185,20 @@ void generateStatement() {
         printf("Cliente não encontrado.\n");
     }
 }
+
+// Realiza uma transferência de dinheiro entre contas
+void transfer() {
+    char cpf_source[12];
+    char password_source[50];
+    char cpf_dest[12];
+    double amount;
+    printf("CPF da Conta de Origem: ");
+    scanf("%s", cpf_source);
+    int index_source = findClientByCPF(cpf_source);
+    if (index_source != -1) {
+        printf("Senha da Conta de Origem: ");
+        scanf("%s", password_source);
+        if (strcmp(clients[index_source].password, password_source) == 0) {
+            printf("CPF da Conta de Destino: ");
+            scanf("%s", cpf_dest);
+            int index_dest = findClientByCPF(cpf_dest);
