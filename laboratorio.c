@@ -149,3 +149,39 @@ void deposit(char cpf[12]) {
         printf("Cliente nao encontrado.\n");
     }
 }
+
+
+// Gera um extrato para um cliente
+void generateStatement() {
+    char cpf[12];
+    char password[50];
+    printf("CPF: ");
+    scanf("%s", cpf);
+    int index = findClientByCPF(cpf);
+    if (index != -1) {
+        printf("Senha: ");
+        scanf("%s", password);
+        if (strcmp(clients[index].password, password) == 0) {
+            char filename[100];
+            sprintf(filename, "extrato_%s.txt", cpf);
+            FILE *file = fopen(filename, "w");
+            if (file) {
+                fprintf(file, "Extrato do Cliente: %s\n", clients[index].name);
+                fprintf(file, "CPF: %s\n", clients[index].cpf);
+                fprintf(file, "Saldo Inicial: R$ %.2f\n", clients[index].balance);
+                fprintf(file, "--------------------------------\n");
+                for (int i = 0; i < clients[index].num_transactions; i++) {
+                    fprintf(file, "Transacao %d: R$ %.2f\n", i + 1, clients[index].transactions[i]);
+                }
+                fclose(file);
+                printf("Extrato gerado com sucesso. Nome do arquivo: %s\n", filename);
+            } else {
+                printf("Erro ao gerar o extrato.\n");
+            }
+        } else {
+            printf("Senha incorreta.\n");
+        }
+    } else {
+        printf("Cliente não encontrado.\n");
+    }
+}
