@@ -78,6 +78,12 @@ void deleteClient(char cpf[12]) {
     }
 }
 
+// Lista todos os clientes
+void listClients() {
+    for (int i = 0; i < num_clients; i++) {
+        printf("%d. %s\n", i + 1, clients[i].name);
+    }
+}
 
 // Realiza um débito na conta de um cliente
 void debit () {
