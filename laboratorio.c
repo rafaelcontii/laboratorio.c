@@ -77,3 +77,46 @@ void deleteClient(char cpf[12]) {
         printf("Cliente não encontrado.\n");
     }
 }
+
+
+// Realiza um débito na conta de um cliente
+void debit () {
+    char cpf[12];
+    char password[50];
+    double amount;
+    printf("CPF: ");
+    scanf("%s", cpf);
+    int index = findClientByCPF(cpf);
+    if (index != -1) {
+        printf("Senha: ");
+        scanf("%s", password);
+        if (strcmp(clients[index].password, password) == 0) {
+            printf("Valor a ser debitado: R$ ");
+            scanf("%lf", &amount);
+            if (clients[index].account_type == 'C') {
+                amount *= 1.05;
+                if (amount > clients[index].balance + 1000.0) {
+                    printf("Saldo insuficiente.\n");
+                    return;
+                }
+            } else if (clients[index].account_type == 'P') {
+                amount *= 1.03;
+                if (amount > clients[index].balance + 5000.0) {
+                    printf("Saldo insuficiente.\n");
+                    return;
+                }
+            }
+            clients[index].balance -= amount;
+            if (clients[index].num_transactions < MAX_TRANSACTIONS) {
+                clients[index].transactions[clients[index].num_transactions] = -amount;
+                clients[index].num_transactions++;
+            }
+            saveClientsToFile();
+            printf("Debito realizado com sucesso. Novo saldo: R$ %.2f\n", clients[index].balance);
+        } else {
+            printf("Senha incorreta.\n");
+        }
+    } else {
+        printf("Cliente nao encontrado.\n");
+    }
+}
